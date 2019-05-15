@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 function resolve(dir) {
-    return path.resolve(__dirname,"..",dir)
+    return path.resolve(__dirname, "..", dir)
 }
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
     },
     //出口
     output: {
-        publicPath:"/",
+        publicPath: "/",
         filename: "./js/[name].js",
         path: path.resolve(__dirname, "../dist")
     },
@@ -27,18 +27,22 @@ module.exports = {
         }
     },
     optimization: {
-       usedExports: true
+        usedExports: true,
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     //模块
     module: {
         rules: [
             // {
-            //     test: /\.?js$/,
+            //     test: /\.m?js$/,
             //     exclude: /(node_modules|bower_components)/,
             //     use: {
             //         loader: 'babel-loader',
             //         options: {
-            //             presets: ['@babel/preset-env']
+            //             presets: ['@babel/preset-env'],
+            //             plugins: ['@babel/plugin-transform-runtime']
             //         }
             //     }
             // },
@@ -50,7 +54,7 @@ module.exports = {
                     },
                     {
                         loader: 'css-loader',
-                        options: { importLoaders: 2 }
+                        options: {importLoaders: 2}
                     },
                     {
                         loader: 'postcss-loader', // compiles postcss
