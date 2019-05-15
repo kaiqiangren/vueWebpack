@@ -5,15 +5,6 @@ const merge = require("webpack-merge");
 const devConfig = {
     //模式
     mode: "development",
-    //入口
-    entry: {
-        main: "./src/main.js"
-    },
-    //出口
-    output: {
-        filename: "[name].js",
-        path: path.resolve(__dirname, "dist")
-    },
     devtool: "cheap-module-eval-source-map",
     //dev服务
     devServer: {
