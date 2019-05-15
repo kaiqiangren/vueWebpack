@@ -5,7 +5,7 @@ const merge = require("webpack-merge");
 const devConfig = {
     //模式
     mode: "development",
-    devtool: "cheap-module-eval-source-map",
+    devtool: "cheap-eval-source-map",
     //dev服务
     devServer: {
         contentBase: path.join(__dirname, 'dist'),

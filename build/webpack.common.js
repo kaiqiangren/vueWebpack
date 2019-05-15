@@ -26,6 +26,9 @@ module.exports = {
             '@': resolve('src') //提供@的路径索引
         }
     },
+    optimization: {
+       usedExports: true
+    },
     //模块
     module: {
         rules: [

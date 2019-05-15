@@ -2,6 +2,7 @@
   "name": "vueWebpack",
   "version": "1.0.0",
   "description": "",
+  "sideEffects": false,
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./build/webpack.dev.js",
