@@ -3,6 +3,11 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+
+function resolve(dir) {
+    return path.resolve(__dirname,"..",dir)
+}
+
 module.exports = {
     //入口
     entry: {
@@ -11,22 +16,29 @@ module.exports = {
     //出口
     output: {
         publicPath:"/",
-        filename: "[name].js",
+        filename: "./js/[name].js",
         path: path.resolve(__dirname, "../dist")
+    },
+    resolve: {
+        // 自动补全的扩展名
+        extensions: ['.js', '.vue'],
+        alias: {
+            '@': resolve('src') //提供@的路径索引
+        }
     },
     //模块
     module: {
         rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            },
+            // {
+            //     test: /\.?js$/,
+            //     exclude: /(node_modules|bower_components)/,
+            //     use: {
+            //         loader: 'babel-loader',
+            //         options: {
+            //             presets: ['@babel/preset-env']
+            //         }
+            //     }
+            // },
             {
                 test: /\.less$/,
                 use: [

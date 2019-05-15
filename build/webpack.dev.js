@@ -10,9 +10,10 @@ const devConfig = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         open:true,
-        port:8000,
-        hot:true,//
-        hotOnly:true,//不自动刷新
+        port:8000,//端口号
+        hot:true,//是否开启热重载
+        hotOnly:true,
+        historyApiFallback:true,//解决SPA路由问题,生产nginx需配置try_files index.html
         proxy:{
             '/api':'http://localhost:3000'
         }

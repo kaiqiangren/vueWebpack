@@ -1,16 +1,18 @@
 <template>
     <div class="fontRed">
         Vue Webpack Test
+        <button type="button" @click="jump">跳转</button>
+        <router-view/>
     </div>
 </template>
 <style scoped lang="less">
     body{
         width:100%;
         height:100%;
-        .fontRed{
-            color: red;
-            transform: translate(50px,50px);
-        }
+        /*.fontRed{*/
+            /*color: red;*/
+            /*transform: translate(50px,50px);*/
+        /*}*/
     }
 </style>
 <script>
@@ -24,6 +26,9 @@
         methods: {
             printMessage(){
 
+            },
+            jump(){
+                this.$router.push("index")
             }
         },
         mounted: function () {
