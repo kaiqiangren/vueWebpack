@@ -6,6 +6,11 @@ const devConfig = {
     //模式
     mode: "development",
     devtool: "cheap-eval-source-map",
+    //出口
+    output: {
+        filename: "./js/[name].js",
+        chunkFilename:"./js/[name].js",
+    },
     //dev服务
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
