@@ -10,14 +10,15 @@
     "build": "webpack --config ./build/webpack.prod.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "kaiqiangren",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "autoprefixer": "^9.5.1",
     "babel-loader": "^8.0.6",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "clean-webpack-plugin": "^2.0.2",
     "css-loader": "^2.1.1",
     "file-loader": "^3.0.1",

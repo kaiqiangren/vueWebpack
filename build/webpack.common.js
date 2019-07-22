@@ -45,17 +45,17 @@ module.exports = {
     //模块
     module: {
         rules: [
-            // {
-            //     test: /\.m?js$/,
-            //     exclude: /(node_modules|bower_components)/,
-            //     use: {
-            //         loader: 'babel-loader',
-            //         options: {
-            //             presets: ['@babel/preset-env'],
-            //             plugins: ['@babel/plugin-transform-runtime']
-            //         }
-            //     }
-            // },
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        plugins: ['@babel/plugin-transform-runtime',"dynamic-import-webpack"]
+                    }
+                }
+            },
             {
                 test: /\.css$/,
                 use:[
@@ -93,7 +93,7 @@ module.exports = {
                     options: {
                         name: '[name]_[hash].[ext]',//设置打包后的文件名以及后缀，[name]是打包前的名字
                         outputPath: 'img/',
-                        limit: 30000,//如果文件大小超过限制字节，则打包，否则打包为base64格式
+                        // limit: 30000,//如果文件大小超过限制字节，则打包，否则打包为base64格式
                     }
                 }
             },
