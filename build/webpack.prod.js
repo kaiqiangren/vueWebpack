@@ -8,7 +8,7 @@ const prodConfig = {
         filename: "./js/[name][contenthash].js", //contenthash为了解决生产环境浏览器缓存问题
         chunkFilename:"./js/[name][contenthash].js"
     },
-    devtool: "cheap-eval-source-map"
+    devtool: "eval-source-map"
 }
 
 module.exports = merge(commonConfig,prodConfig);
