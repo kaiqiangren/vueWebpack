@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve(dir) {
     return path.resolve(__dirname, "..", dir)
@@ -23,24 +23,27 @@ module.exports = {
             '@': resolve('src') //提供@的路径索引
         }
     },
-    optimization: {
-        usedExports: true,
-        splitChunks: {
-            chunks: 'all',
-            cacheGroups:{
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10,
-                    name:"vendors"
-                }
-            }
-        }
-    },
+    // optimization: {
+    //     usedExports: true,
+    //     splitChunks: {
+    //         chunks: 'all',
+    //         cacheGroups:{
+    //             vendors: {
+    //                 test: /[\\/]node_modules[\\/]/,
+    //                 priority: -10,
+    //                 name:"vendors"
+    //             }
+    //         }
+    //     }
+    // },
     module: {
         rules: [
             {
                 test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: file => (
+                    /node_modules/.test(file) &&
+                    !/\.vue\.js/.test(file)
+                ),
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -50,10 +53,26 @@ module.exports = {
                 }
             },
             {
+                test: /\.ts$/,
+                loader: 'ts-loader',
+                options: { appendTsSuffixTo: [/\.vue$/] }
+            },
+            {
+                test: /\.styl(us)?$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'stylus-loader'
+                ]
+            },
+            {
                 test: /\.css$/,
                 use:[
                     'vue-style-loader',
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: { importLoaders: 1 }
+                    },
                     'postcss-loader'
                 ]
             },
@@ -78,13 +97,11 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: [{
-                    loader: "style-loader"
-                }, {
-                    loader: "css-loader"
-                }, {
-                    loader: "sass-loader"
-                }]
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
             },
             {
                 test: /\.vue$/,
@@ -111,10 +128,10 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        }),
+        // new MiniCssExtractPlugin({
+        //     filename: "[name].css",
+        //     chunkFilename: "[id].css"
+        // }),
         new HtmlWebpackPlugin({
             template: "./public/index.html"
         }),
