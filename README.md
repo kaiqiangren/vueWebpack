@@ -1,6 +1,6 @@
-# vueWebpack
+# 乐知行前端脚手架2020 v0.0.1
 
-> \"vueWebpack-- A webpack4 project for vue \"
+> \"乐知行前端专用脚手架\"
 
 ## Build Setup
 

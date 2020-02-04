@@ -5,9 +5,9 @@
   "sideEffects": false,
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config ./build/webpack.dev.js",
+    "dev": "webpack-dev-server --progress --color --config ./build/webpack.dev.js",
     "devBuild": "webpack --config ./build/webpack.dev.js",
-    "build": "webpack --config ./build/webpack.prod.js"
+    "build": "webpack --progress --color --config ./build/webpack.prod.js"
   },
   "keywords": [],
   "author": "kaiqiangren",

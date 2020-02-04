@@ -3,7 +3,9 @@ import App from "./App.vue";
 import router from "./router.js";
 import { printMessage } from "@/assets/util/util";
 import image from "@/assets/img/沾福气.jpg";
+import add from "../test/ts/test"
 
+add()
 const img = new Image();
 img.src = image;
 document.body.appendChild(img)
