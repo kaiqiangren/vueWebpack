@@ -1,31 +1,30 @@
-const path = require("path");
+const path = require('path');
 const webpack = require("webpack");
-const commonConfig = require("./webpack.common");
 const merge = require("webpack-merge");
+const commonConfig = require("./webpack.common");
+
 const devConfig = {
-    //模式
-    mode: "development",
-    devtool: "cheap-eval-source-map",
-    //出口
-    output: {
-        filename: "./js/[name].js",
-        chunkFilename:"./js/[name].js",
-    },
-    //dev服务
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        open:true,
-        port:8000,//端口号
-        hot:true,//是否开启热重载
-        hotOnly:true,
-        historyApiFallback:true,//解决SPA路由问题,生产nginx需配置try_files index.html
-        proxy:{
-            '/api':'http://localhost:3000'
+  mode: 'development',
+  devtool: 'cheap-eval-inline-source-map',
+  devServer: {
+    contentBase: path.join(__dirname, '../src/assets'), // 设置服务器启动目录
+    host:'localhost',
+    port:8080,
+    hot: true,
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        pathRewrite: {
+          '^/api': ''
         }
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin()
-    ]
+      },
+      changeOrigin: true
+    }
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
 }
 
 module.exports = merge(commonConfig,devConfig)

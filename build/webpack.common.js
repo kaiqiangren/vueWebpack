@@ -1,122 +1,125 @@
-const path = require("path");
+const path = require('path')
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const webpack = require("webpack");
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-function resolve(dir) {
-    return path.resolve(__dirname, "..", dir)
-}
+const VueLoaderPlugin = require("vue-loader/lib/plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
-    //入口
-    entry: {
-        main: "./src/main.js"
-    },
-    //出口
-    output: {
-        publicPath: "/",
-        path: path.resolve(__dirname, "../dist")
-    },
-    resolve: {
-        // 自动补全的扩展名
-        extensions: ['.js', '.vue'],
-        alias: {
-            '@': resolve('src') //提供@的路径索引
+  entry: {
+    main:'./src/main.ts',
+  },
+  stats: 'errors-only', // 只在报错时显示输出日志
+  output: {
+    filename: '[name].js', // 输出的文件名称
+    chunkFilename: '[name].bundle.js', // 输出的分支名称
+    path: path.resolve(__dirname, '../dist')
+  },
+  optimization: {
+    // usedExports: true, // treeShaking
+    // splitChunks: {
+    //   chunks: 'all', // 当存在多个入口时，可以防止同一模块被引入多次, 例如同一个库被多次引入，则库文件会被单独打包出一份vendor
+    //   // 将第三方库(library)（例如 lodash 或 react）提取到单独的 vendor chunk 文件中，是比较推荐的做法
+    //   cacheGroups: {
+    //     vendor: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       name: 'vendors',
+    //       chunks: 'all'
+    //     }
+    //   }
+    // },
+    // runtimeChunk: 'single' // 将其设置为 single 来为所有 chunk 创建一个 runtime bundle (缓存方式)
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.tsx','.vue'],
+    alias:{
+      '@':path.join(__dirname,'../src')
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
         }
-    },
-    optimization: {
-        usedExports: true,
-        // runtimeChunk: {
-        //     name: 'runtime'//解决老版本webpack4的缓存问题
-        // },
-        splitChunks: {
-            chunks: 'all',
-            //缓存node_modules中的代码
-            cacheGroups:{
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10,
-                    name:"vendors"
-                }
+      },
+      {
+        test: /\.js?$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        },
+        exclude: file => (
+            /node_modules/.test(file) &&
+            !/\.vue\.js/.test(file)
+        )
+      },
+      {
+        test: /.css$/,
+        use: [
+          process.env.NODE_ENV !== 'production'
+              ? 'vue-style-loader'
+              : MiniCssExtractPlugin.loader,  //只在生产环境压缩
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
             }
-        }
-    },
-    //模块
-    module: {
-        rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: ['@babel/plugin-transform-runtime',"dynamic-import-webpack"]
-                    }
-                }
-            },
-            {
-                test: /\.css$/,
-                use:[
-                    MiniCssExtractPlugin.loader,
-                    'postcss-loader'
-                ]
-            },
-            {
-                test: /\.less$/,
-                use: [
-                    // {
-                    //     loader: 'style-loader', // creates style nodes from JS strings
-                    // },
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {importLoaders: 2}
-                    },
-                    {
-                        loader: 'postcss-loader', // compiles postcss
-                    },
-                    {
-                        loader: 'less-loader', // compiles Less to CSS
-                    }
-                ]
-            },
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader'
-            },
-            {
-                test: /\.(jpg|png|gif)$/,//以jpg结尾的文件
-                use: {
-                    loader: "url-loader", //使用file-loader/url-loader进行打包
-                    options: {
-                        name: '[name]_[hash].[ext]',//设置打包后的文件名以及后缀，[name]是打包前的名字
-                        outputPath: 'img/',
-                        // limit: 30000,//如果文件大小超过限制字节，则打包，否则打包为base64格式
-                    }
-                }
-            },
-            {
-                test: /\.(eot|ttf|svg)$/,//以jpg结尾的文件
-                use: {
-                    loader: "file-loader", //使用file-loader打包字体图标文件
-                }
-            }
+          },
+          "postcss-loader"
         ]
-    },
-    plugins: [
-        new VueLoaderPlugin(),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        }),
-        new HtmlWebpackPlugin({
-            template: "./public/index.html"
-        }),
-        new CleanWebpackPlugin(),
+      },
+      // {
+      //   test: /\.scss$/,
+      //   use: [
+      //     'vue-style-loader',
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         importLoaders: 1
+      //       }
+      //     },
+      //     "sass-loader"
+      //   ]
+      // },
+      {
+        test: /\.(png|svg|jpe?g|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name]_[hash].[ext]',//设置打包后的文件名以及后缀，[name]是打包前的名字
+              outputPath: 'img/',
+              // limit: 30000,//如果文件大小超过限制字节，则打包，否则打包为base64格式
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
+        enforce: 'pre',
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
     ]
-
-}
+  },
+  plugins:[
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      template: "public/index.html"
+    }),
+    new CleanWebpackPlugin()
+  ]
+};
